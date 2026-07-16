@@ -7,7 +7,7 @@
 
 > Angular client application for a full-stack Publications Management System built for a publishing house. Provides a rich UI for managing books, authors, publishers, orders and inventory.
 
-🔗 **Backend Repository:** [PublicationsManagementSystemBackend](https://github.com/YOUR_USERNAME/PublicationsManagementSystemBackend)
+🔗 **Backend Repository:** [PublicationsManagementSystemBackend](https://github.com/angeasla/publications-management-system-backend)
 
 ---
 
