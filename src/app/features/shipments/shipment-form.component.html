@@ -1,0 +1,136 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ 'shipments.form.title' | translate }}</h1>
+    <p style="color: var(--text-muted)">{{ 'shipments.form.subtitle' | translate }}</p>
+  </div>
+  <div>
+    <a routerLink="/shipments" class="btn btn-secondary">{{ 'common.actions.cancel' | translate }}</a>
+  </div>
+</div>
+
+<div class="grid-cols-1-2">
+  <!-- Left Side: Shipment Details -->
+  <div class="glass-card">
+    <h3 style="margin-bottom: 1.25rem; font-size: 1.1rem; font-weight: 600; color: var(--accent-color);">
+      {{ 'shipments.form.detailsTitle' | translate }}
+    </h3>
+    
+    <form (ngSubmit)="onSubmit()" #shipmentForm="ngForm">
+      <!-- Συνεργάτης -->
+      <div class="form-group">
+        <label class="form-label">{{ 'shipments.form.fields.partner' | translate }} <span style="color: var(--danger)">*</span></label>
+        <select [(ngModel)]="partnerId" name="partnerId" required class="form-select">
+          <option value="0" disabled>{{ 'shipments.form.fields.partnerPlaceholder' | translate }}</option>
+          @for (partner of partners; track partner.id) {
+            <option [value]="partner.id">{{ 'common.partnerOption' | translate: { name: partner.name, category: partner.category } }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Ημερομηνία Αποστολής -->
+      <div class="form-group">
+        <label class="form-label">{{ 'shipments.form.fields.shipmentDate' | translate }} <span style="color: var(--danger)">*</span></label>
+        <input type="date" [(ngModel)]="shipmentDate" name="shipmentDate" required class="form-input" />
+      </div>
+
+      <!-- Μεταφορική (Courier) -->
+      <div class="form-group">
+        <label class="form-label">{{ 'shipments.form.fields.courier' | translate }}</label>
+        <input type="text" [(ngModel)]="courier" name="courier" [placeholder]="'shipments.form.fields.courierPlaceholder' | translate" class="form-input" />
+      </div>
+
+      <!-- Tracking Number -->
+      <div class="form-group">
+        <label class="form-label">{{ 'shipments.form.fields.tracking' | translate }}</label>
+        <input type="text" [(ngModel)]="trackingNumber" name="trackingNumber" [placeholder]="'shipments.form.fields.trackingPlaceholder' | translate" class="form-input" />
+      </div>
+
+      <!-- Κατάσταση -->
+      <div class="form-group">
+        <label class="form-label">{{ 'shipments.form.fields.status' | translate }}</label>
+        <select [(ngModel)]="status" name="status" class="form-select">
+          <option value="PREPARING">{{ 'shipments.form.statusOptions.preparing' | translate }}</option>
+          <option value="SENT">{{ 'shipments.form.statusOptions.sent' | translate }}</option>
+          <option value="DELIVERED">{{ 'shipments.form.statusOptions.delivered' | translate }}</option>
+        </select>
+      </div>
+
+      <!-- Σημειώσεις -->
+      <div class="form-group">
+        <label class="form-label">{{ 'shipments.form.fields.notes' | translate }}</label>
+        <input type="text" [(ngModel)]="notes" name="notes" [placeholder]="'shipments.form.fields.notesPlaceholder' | translate" class="form-input" />
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <button type="submit" class="btn btn-primary" style="width: 100%;" [disabled]="partnerId === 0 || formLines.length === 0">
+          {{ 'shipments.form.submit' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Right Side: Items Editor -->
+  <div class="glass-card">
+    <h3 style="margin-bottom: 1.25rem; font-size: 1.1rem; font-weight: 600; color: var(--accent-color);">
+      {{ 'shipments.form.booksTitle' | translate }}
+    </h3>
+
+    <!-- Add Item form inside details -->
+    <div style="display: flex; gap: 1rem; align-items: flex-end; background-color: rgba(15, 23, 42, 0.4); padding: 1rem; border-radius: var(--border-radius-sm); border: 1px dashed var(--card-border); margin-bottom: 1.5rem;">
+      <div class="form-group" style="flex-grow: 2; margin-bottom: 0;">
+        <label class="form-label">{{ 'shipments.form.fields.selectBook' | translate }}</label>
+        <select [(ngModel)]="selectedBookId" class="form-select">
+          <option value="0" disabled>{{ 'shipments.form.fields.bookPlaceholder' | translate }}</option>
+          @for (book of books; track book.id) {
+            <option [value]="book.id">{{ 'shipments.form.fields.bookOption' | translate: { title: book.title, stock: (book.warehouseStock || 0) } }}</option>
+          }
+        </select>
+      </div>
+      
+      <div class="form-group" style="width: 120px; margin-bottom: 0;">
+        <label class="form-label">{{ 'shipments.form.fields.quantity' | translate }}</label>
+        <input type="number" min="1" [(ngModel)]="lineQuantity" class="form-input" />
+      </div>
+
+      <button type="button" (click)="addLine()" class="btn btn-primary" style="padding: 0.75rem 1rem;">
+        {{ 'shipments.form.addBook' | translate }}
+      </button>
+    </div>
+
+    <!-- Added Items List Table -->
+    <div class="table-container">
+      <table class="custom-table" *ngIf="formLines.length > 0; else emptyLines">
+        <thead>
+          <tr>
+            <th>{{ 'shipments.form.linesColumns.book' | translate }}</th>
+            <th style="text-align: center;">{{ 'shipments.form.linesColumns.quantity' | translate }}</th>
+            <th style="text-align: right;">{{ 'shipments.form.linesColumns.action' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let line of formLines; let i = index">
+            <td style="font-weight: 500;">{{ line.bookTitle }}</td>
+            <td style="text-align: center; font-weight: 600; color: var(--accent-color);">
+              {{ line.quantity }}
+            </td>
+            <td style="text-align: right;">
+              <button type="button" (click)="removeLine(i)" class="btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 14px; height: 14px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                </svg>
+                {{ 'common.actions.remove' | translate }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ng-template #emptyLines>
+        <div style="text-align: center; padding: 3rem; color: var(--text-muted); border: 1px dashed var(--card-border); border-radius: var(--border-radius-sm);">
+          {{ 'shipments.form.emptyLines' | translate }}
+        </div>
+      </ng-template>
+    </div>
+
+  </div>
+</div>

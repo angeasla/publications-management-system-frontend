@@ -1,0 +1,78 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ 'settlements.list.title' | translate }}</h1>
+    <p style="color: var(--text-muted)">{{ 'settlements.list.subtitle' | translate }}</p>
+  </div>
+  <div>
+    <a routerLink="/settlements/new" class="btn btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+      {{ 'settlements.list.newSettlement' | translate }}
+    </a>
+  </div>
+</div>
+
+<div class="glass-card">
+  <div class="table-container">
+    @if (settlements.length > 0) {
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>{{ 'settlements.list.columns.idDate' | translate }}</th>
+            <th>{{ 'settlements.list.columns.partner' | translate }}</th>
+            <th>{{ 'settlements.list.columns.period' | translate }}</th>
+            <th style="text-align: center;">{{ 'settlements.list.columns.hasDetail' | translate }}</th>
+            <th style="text-align: right;">{{ 'settlements.list.columns.salesValue' | translate }}</th>
+            <th style="text-align: right;">{{ 'settlements.list.columns.receivedAmount' | translate }}</th>
+            <th>{{ 'settlements.list.columns.notes' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of settlements; track s.id) {
+            <tr>
+              <td>
+                <div style="font-weight: 600; color: var(--text-main);">#{{ s.id }}</div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">{{ s.reportedDate | date:'dd/MM/yyyy' }}</div>
+              </td>
+              <td style="font-weight: 500;">{{ s.partnerName }}</td>
+              <td>
+                @if (s.periodStart || s.periodEnd) {
+                  {{ s.periodStart ? (s.periodStart | date:'dd/MM/yy') : ('settlements.list.periodStart' | translate) }} - 
+                  {{ s.periodEnd ? (s.periodEnd | date:'dd/MM/yy') : ('settlements.list.periodEnd' | translate) }}
+                } @else {
+                  <span style="color: var(--text-muted)">-</span>
+                }
+              </td>
+              <td style="text-align: center;">
+                <span class="badge" [class.badge-success]="s.hasQuantityDetail" [class.badge-warning]="!s.hasQuantityDetail">
+                  {{ s.hasQuantityDetail ? ('settlements.list.hasDetailYes' | translate) : ('settlements.list.hasDetailNo' | translate) }}
+                </span>
+              </td>
+              <td style="text-align: right; font-weight: 600; color: var(--text-main);">
+                @if (s.hasQuantityDetail) {
+                  {{ getCalculatedTotal(s) | number:'1.2-2' }}€
+                } @else {
+                  <span style="color: var(--text-muted)">-</span>
+                }
+              </td>
+              <td style="text-align: right; font-weight: 600; color: var(--accent-color);">
+                {{ s.receivedAmount | number:'1.2-2' }}€
+              </td>
+              <td style="font-size: 0.85rem; color: var(--text-muted); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                {{ s.notes || '-' }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.5;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.375M9 9h3.75M16.5 21.75V3.375c0-.621-.504-1.125-1.125-1.125H3.75c-.621 0-1.125.504-1.125 1.125v18.375c0 .621.504 1.125 1.125 1.125h11.625c.621 0 1.125-.504 1.125-1.125ZM21 3.75v16.5c0 .621-.504 1.125-1.125 1.125H18M21 3.75c0-.621-.504-1.125-1.125-1.125H18M21 3.75h-3M18 21.75V2.25" />
+        </svg>
+        <p>{{ 'settlements.list.empty' | translate }}</p>
+      </div>
+    }
+  </div>
+</div>

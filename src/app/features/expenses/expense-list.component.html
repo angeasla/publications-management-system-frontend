@@ -1,0 +1,82 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ 'expenses.list.title' | translate }}</h1>
+    <p style="color: var(--text-muted)">{{ 'expenses.list.subtitle' | translate }}</p>
+  </div>
+  <div>
+    <a routerLink="/expenses/new" class="btn btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+      {{ 'expenses.list.newExpense' | translate }}
+    </a>
+  </div>
+</div>
+
+<div class="glass-card">
+  <div class="filter-bar" style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 1.5rem;">
+    <!-- Category Filter -->
+    <div style="width: 250px;">
+      <select [(ngModel)]="categoryFilter" (ngModelChange)="filterExpenses()" class="form-select">
+        <option value="">{{ 'expenses.list.allCategories' | translate }}</option>
+        <option value="PRINTING">{{ 'expenses.categories.printing' | translate }}</option>
+        <option value="TRANSLATION">{{ 'expenses.categories.translation' | translate }}</option>
+        <option value="ROYALTIES">{{ 'expenses.categories.royalties' | translate }}</option>
+        <option value="SHIPPING">{{ 'expenses.categories.shipping' | translate }}</option>
+        <option value="RENT_UTILITIES">{{ 'expenses.categories.rentUtilities' | translate }}</option>
+        <option value="OFFICE_SUPPLIES">{{ 'expenses.categories.officeSupplies' | translate }}</option>
+        <option value="MARKETING">{{ 'expenses.categories.marketing' | translate }}</option>
+        <option value="OTHER">{{ 'expenses.categories.other' | translate }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-container">
+    @if (filteredExpenses.length > 0) {
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>{{ 'expenses.list.columns.date' | translate }}</th>
+            <th>{{ 'expenses.list.columns.description' | translate }}</th>
+            <th>{{ 'expenses.list.columns.category' | translate }}</th>
+            <th style="text-align: right;">{{ 'expenses.list.columns.amount' | translate }}</th>
+            <th>{{ 'expenses.list.columns.notes' | translate }}</th>
+            <th style="text-align: right;">{{ 'expenses.list.columns.actions' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of filteredExpenses; track e.id) {
+            <tr>
+              <td>{{ e.expenseDate | date:'dd/MM/yyyy' }}</td>
+              <td style="font-weight: 500; color: var(--text-main);">{{ e.description }}</td>
+              <td>{{ getCategoryLabel(e.category) }}</td>
+              <td style="text-align: right; font-weight: 700; color: var(--danger); font-size: 1.05rem;">
+                {{ e.amount | number:'1.2-2' }}€
+              </td>
+              <td style="font-size: 0.85rem; color: var(--text-muted); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                {{ e.notes || '-' }}
+              </td>
+              <td style="text-align: right;">
+                <div style="display: inline-flex; gap: 0.5rem;">
+                  <a [routerLink]="['/expenses/edit', e.id]" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.85rem;">
+                    {{ 'common.actions.edit' | translate }}
+                  </a>
+                  <button (click)="deleteExpense(e.id!)" class="btn btn-danger" style="padding: 0.4rem 0.75rem; font-size: 0.85rem;">
+                    {{ 'common.actions.delete' | translate }}
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.5;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+        </svg>
+        <p>{{ 'expenses.list.empty' | translate }}</p>
+      </div>
+    }
+  </div>
+</div>

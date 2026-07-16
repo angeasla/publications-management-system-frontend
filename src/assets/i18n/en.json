@@ -1,0 +1,666 @@
+{
+  "sidebar": {
+    "appName": "Publishing House Name",
+    "appLabel": "Publishing",
+    "dashboard": "Dashboard",
+    "books": "Books",
+    "partners": "Partners",
+    "ledger": "Ledger",
+    "shipments": "Shipments",
+    "settlements": "Settlements",
+    "directSales": "Retail / Festival",
+    "payments": "Payments / Collections",
+    "expenses": "Expenses",
+    "logout": "Logout",
+    "changePassword": "Change Password"
+  },
+  "common": {
+    "language": "Language",
+    "actions": {
+      "save": "Save",
+      "saveChanges": "Save Changes",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "create": "Create",
+      "search": "Search",
+      "back": "Back",
+      "submit": "Submit",
+      "add": "Add",
+      "remove": "Remove",
+      "print": "Print",
+      "backToList": "Back to List"
+    },
+    "messages": {
+      "saveSuccess": "Saved successfully",
+      "deleteSuccess": "Deleted successfully",
+      "confirmDelete": "Are you sure you want to delete?",
+      "loading": "Loading...",
+      "noResults": "No results found.",
+      "confirmLogout": "Are you sure you want to log out?"
+    },
+    "errors": {
+      "generic": "An error occurred. Please try again.",
+      "network": "Connection error with the server.",
+      "loadFailed": "Error loading data.",
+      "saveFailed": "Error saving data.",
+      "languageChangeFailed": "Language change failed."
+    },
+    "validation": {
+      "required": "This field is required",
+      "invalidValue": "Invalid value",
+      "fillAllRequired": "Please fill in all fields.",
+      "fillRequiredFields": "Please fill in all required fields."
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "activeMale": "Active",
+      "inactiveMale": "Inactive"
+    },
+    "partnerOption": "{{name}} ({{category}})"
+  },
+  "auth": {
+    "login": {
+      "title": "Publishing House Name",
+      "subtitle": "Publishing & Inventory Management System",
+      "username": "Username",
+      "password": "Password",
+      "usernamePlaceholder": "e.g. admin",
+      "submitLoading": "Logging in...",
+      "submit": "Sign In",
+      "invalidCredentials": "Invalid username or password."
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "subtitle": "Update the password for your account.",
+      "oldPassword": "Current Password",
+      "oldPasswordPlaceholder": "Enter your current password",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "At least 4 characters",
+      "confirmPassword": "Confirm New Password",
+      "confirmPasswordPlaceholder": "Re-enter your new password",
+      "submitLoading": "Changing password...",
+      "submit": "Change Password",
+      "success": "Password changed successfully!",
+      "mismatch": "The new password and confirmation do not match.",
+      "weakPassword": "The new password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.",
+      "error": "Error changing password. Please try again."
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of publications, sales, and financial data of the publishing house.",
+    "loading": "Loading dashboard data...",
+    "metrics": {
+      "grossRevenue": "Gross Revenue (Collections)",
+      "grossRevenueDesc": "Total amount collected from sales",
+      "totalExpenses": "Total Expenses",
+      "totalExpensesDesc": "Recorded operational and publishing expenses",
+      "netCashFlow": "Net Cash Flow",
+      "netCashFlowDesc": "Net profitability (Revenue - Expenses)",
+      "activeTitles": "Active Titles",
+      "activeTitlesDesc": "Books in the publisher's catalog",
+      "printedCopies": "Printed Copies",
+      "printedCopiesDesc": "Total production from printing house",
+      "soldCopies": "Sold Copies",
+      "soldCopiesDesc": "Retail sales & settlements ({{percent}}% of production)"
+    },
+    "topBooks": {
+      "title": "Best-Selling Books",
+      "bookTitle": "Book Title",
+      "copiesSold": "Copies Sold",
+      "noSales": "No sales recorded yet."
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "newBook": "New Book",
+      "newShipment": "New Shipment",
+      "newSettlement": "New Settlement",
+      "newDirectSale": "Record Retail Sale",
+      "newPayment": "Record Payment (Collection)",
+      "financialTitle": "Financial Overview",
+      "viewLedger": "View Partner Ledger"
+    }
+  },
+  "books": {
+    "list": {
+      "title": "Book Catalog & Inventory",
+      "subtitle": "Manage books, pricing, and total inventory (warehouse & consignment).",
+      "newBook": "New Book",
+      "searchPlaceholder": "Search by title, author, or ISBN...",
+      "showActiveOnly": "Show Active Only",
+      "showAll": "Show All Books",
+      "columns": {
+        "titleAuthor": "Title / Author",
+        "isbn": "ISBN",
+        "retailPrice": "RRP (€)",
+        "warehouseStock": "Warehouse Stock",
+        "consignmentStock": "At Partners",
+        "totalStock": "Total Stock",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "stockMovements": "Movements / Stock",
+      "empty": "No books found. Click \"New Book\" to add your first book."
+    },
+    "form": {
+      "titleNew": "Add New Book",
+      "titleEdit": "Edit Book",
+      "subtitleNew": "Add a new title to the catalog and set base prices.",
+      "subtitleEdit": "Modify the book's details and pricing rules.",
+      "fields": {
+        "title": "Book Title",
+        "titlePlaceholder": "e.g. The Name of the Rose",
+        "author": "Author",
+        "authorPlaceholder": "e.g. Umberto Eco",
+        "isbn": "ISBN",
+        "isbnPlaceholder": "e.g. 978-960-...",
+        "imprint": "Imprint (Label/Publishing)",
+        "imprintPlaceholder": "e.g. Publishing House Name",
+        "publicationDate": "Publication Date",
+        "retailPrice": "Retail Price (RRP €)",
+        "retailPriceHint": "The nominal retail price at bookstores.",
+        "productionCost": "Production Cost / Copy (€)",
+        "productionCostHint": "Printing cost per book for profit calculation.",
+        "publisherShare": "Default Publisher Share (e.g. 0.50 = 50%)",
+        "publisherShareHint": "The percentage of RRP the publisher receives from warehouses/bookstores (default 50%).",
+        "diyPrice": "Default DIY Space Price (€)",
+        "diyPricePlaceholder": "Empty to fallback to 50% of RRP",
+        "diyPriceHint": "The net price charged to DIY spaces. If left empty, 50% of RRP is used.",
+        "activeCheckbox": "The book is active (appears in transaction and shipment lists)"
+      },
+      "submitNew": "Create Book",
+      "submitEdit": "Save Changes",
+      "errors": {
+        "loadFailed": "Error loading book.",
+        "requiredFields": "Please fill in the required fields (Title, Author, RRP).",
+        "updateFailed": "Error updating book.",
+        "createFailed": "Error creating book."
+      }
+    },
+    "details": {
+      "subtitle": "Movement History & Book Details",
+      "newMovement": "New Stock Movement",
+      "cancelMovement": "Cancel Movement",
+      "warehouseStock": "Warehouse",
+      "warehouseStockDesc": "Copies available for shipment",
+      "consignmentStock": "Consignment (At Partners)",
+      "consignmentStockDesc": "Copies at bookstores/warehouses",
+      "totalStock": "Total Stock",
+      "totalStockDesc": "Total printed & active copies",
+      "bookInfo": "Book Details",
+      "isbnLabel": "ISBN",
+      "isbnNotSet": "Not set",
+      "imprintLabel": "Imprint / Label",
+      "imprintDefault": "Default",
+      "retailPriceLabel": "Retail Price (RRP)",
+      "publisherShareLabel": "Publisher Share (Default)",
+      "publisherShareValue": "{{percent}}% ({{amount}}€)",
+      "diyPriceLabel": "DIY Price (Default)",
+      "diyPriceFallback": "Fallback (50% of RRP)",
+      "productionCostLabel": "Production Cost / Copy",
+      "publicationDateLabel": "Publication Date",
+      "statusLabel": "Status",
+      "editDetails": "Edit Details",
+      "movementForm": {
+        "title": "Record New Stock Movement",
+        "type": "Movement Type",
+        "quantity": "Quantity (copies)",
+        "quantityHint": "For Adjustment, enter a negative number to decrease (e.g. -5).",
+        "date": "Movement Date",
+        "notes": "Notes / Comments",
+        "notesPlaceholder": "e.g. Received 1st edition, July inventory...",
+        "quantityZeroError": "Quantity cannot be 0.",
+        "success": "Stock movement recorded successfully.",
+        "error": "Error recording stock movement."
+      },
+      "movementTypes": {
+        "receivedFromPrinter": "Received from Printer",
+        "shippedToPartner": "Shipped to Partner",
+        "soldDirect": "Direct Sale (Retail)",
+        "soldFromConsignment": "Sold from Consignment",
+        "returned": "Returned from Partner",
+        "donated": "Donation / Sponsorship",
+        "destroyed": "Destroyed",
+        "adjustment": "Manual Adjustment"
+      },
+      "movementOptions": {
+        "receivedFromPrinter": "Received from Printer (+)",
+        "returned": "Returned from Partner (+)",
+        "donated": "Donation / Sponsorship (-)",
+        "destroyed": "Destroyed (-)",
+        "adjustment": "Manual Adjustment (+/-)"
+      },
+      "history": {
+        "title": "Stock Movement History",
+        "dateColumn": "Date",
+        "typeColumn": "Movement Type",
+        "partnerColumn": "Partner",
+        "quantityColumn": "Quantity",
+        "notesColumn": "Notes",
+        "empty": "No stock movements recorded for this book yet."
+      }
+    }
+  },
+  "partners": {
+    "list": {
+      "title": "Partners & Distribution Channels",
+      "subtitle": "Manage bookstores, distribution warehouses, and DIY spaces the publishing house works with.",
+      "newPartner": "New Partner",
+      "searchPlaceholder": "Search by name...",
+      "allCategories": "All Categories",
+      "showActiveOnly": "Show Active Only",
+      "showAll": "Show All Partners",
+      "columns": {
+        "name": "Name",
+        "category": "Category",
+        "channelType": "Transaction Type",
+        "discount": "Discount / Override",
+        "contact": "Contact Details",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "overrideSpecial": "Special",
+      "overrideValue": "{{percent}}% (Special)",
+      "overrideDefault": "Book default (50%)",
+      "empty": "No partners found. Click \"New Partner\" to create your first partner."
+    },
+    "form": {
+      "titleNew": "Add New Partner",
+      "titleEdit": "Edit Partner",
+      "subtitleNew": "Add a new partner/bookstore to the management system.",
+      "subtitleEdit": "Modify the partner's details and transaction settings.",
+      "fields": {
+        "name": "Partner / Bookstore Name",
+        "namePlaceholder": "e.g. The Corner Bookstore",
+        "category": "Category",
+        "channelType": "Transaction Type",
+        "channelTypeHint": "In consignment, shipments do not create debt (only settlements do).",
+        "publisherShareOverride": "Special Publisher Share (Override - e.g. 0.40 for 40%)",
+        "publisherSharePlaceholder": "Empty to use book default",
+        "publisherShareHint": "If set, overrides the book's default share when calculating settlements.",
+        "contactInfo": "Contact Details",
+        "contactPlaceholder": "Address, Phone, Email, Contact person...",
+        "notes": "Notes",
+        "notesPlaceholder": "Any other information or special agreements...",
+        "activeCheckbox": "The partner is active"
+      },
+      "submitNew": "Create Partner",
+      "submitEdit": "Save Changes",
+      "errors": {
+        "loadFailed": "Error loading partner.",
+        "updateFailed": "Error updating partner.",
+        "createFailed": "Error creating partner."
+      }
+    },
+    "categories": {
+      "warehouseDistributor": "Distribution Warehouse",
+      "bookstore": "Bookstore",
+      "diySpace": "DIY Space",
+      "festival": "Festival",
+      "school": "School",
+      "library": "Library",
+      "individual": "Individual"
+    },
+    "channelTypes": {
+      "consignment": "Consignment",
+      "directSale": "Direct Sale"
+    },
+    "channelTypeOptions": {
+      "consignment": "Consignment (Channels 1-3)",
+      "directSale": "Direct Sale (Retail/Invoicing)"
+    },
+    "categoryOptions": {
+      "diySpace": "DIY Space (Self-managed)"
+    },
+    "statement": {
+      "title": "Partner Ledger",
+      "subtitle": "View all debits, credits, collections, and current balance.",
+      "selectPartner": "Select Partner:",
+      "printHeader": "Partner Transactions & Balance Statement",
+      "partnerDetails": "Partner Details:",
+      "noContactInfo": "No contact details available",
+      "issueDate": "Issue Date:",
+      "totalDebits": "Total Debits (Sales)",
+      "totalDebitsDesc": "Value of books sold through settlements",
+      "totalCredits": "Total Credits (Collections)",
+      "totalCreditsDesc": "Total amount collected",
+      "currentBalance": "Current Balance",
+      "balanceOwed": "The partner owes us",
+      "balanceCredit": "Has credit balance (prepayment)",
+      "balanceZero": "Balance is zero",
+      "ledgerTitle": "Detailed Transaction Journal",
+      "columns": {
+        "date": "Date",
+        "description": "Transaction Description",
+        "debit": "Debit (+) (Owed)",
+        "credit": "Credit (-) (Collection)",
+        "balance": "Current Balance"
+      },
+      "empty": "No transactions recorded in this partner's ledger."
+    }
+  },
+  "shipments": {
+    "list": {
+      "title": "Distributions & Shipments",
+      "subtitle": "Track book shipments to consignment partners (bookstores/warehouses).",
+      "newShipment": "New Shipment",
+      "allStatuses": "All Shipments",
+      "columns": {
+        "idDate": "ID / Ship Date",
+        "partner": "Partner",
+        "courier": "Courier",
+        "tracking": "Tracking Number",
+        "booksQuantity": "Books / Quantity",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "markAsSent": "Mark as \"Sent\"",
+      "markAsDelivered": "Mark as \"Delivered\"",
+      "completed": "Completed",
+      "empty": "No shipments found. Click \"New Shipment\" to record a distribution.",
+      "confirmStatusChange": "Do you want to change the shipment status to \"{{status}}\"?\n",
+      "confirmSentNote": "This will automatically decrease warehouse stock and increase the partner's stock.",
+      "statusChangeError": "Error changing status."
+    },
+    "statuses": {
+      "preparing": "Preparing",
+      "sent": "Sent",
+      "delivered": "Delivered"
+    },
+    "statusOptions": {
+      "preparing": "In Preparation",
+      "sent": "Sent",
+      "delivered": "Delivered"
+    },
+    "form": {
+      "title": "New Book Shipment",
+      "subtitle": "Create a new consignment distribution. Select a partner and add the books you are sending.",
+      "detailsTitle": "Shipment Details",
+      "booksTitle": "Shipment Books",
+      "fields": {
+        "partner": "Partner (Consignment)",
+        "partnerPlaceholder": "-- Select Partner --",
+        "shipmentDate": "Shipment Date",
+        "courier": "Courier Company",
+        "courierPlaceholder": "e.g. FedEx, DHL, Self-delivery",
+        "tracking": "Tracking Number (Voucher)",
+        "trackingPlaceholder": "e.g. 123456789",
+        "status": "Shipment Status",
+        "notes": "Notes / Comments",
+        "notesPlaceholder": "e.g. July order, Festival...",
+        "selectBook": "Select Book",
+        "bookPlaceholder": "-- Select Book --",
+        "bookOption": "{{title}} (Available: {{stock}})",
+        "quantity": "Quantity",
+        "available": "Available"
+      },
+      "statusOptions": {
+        "preparing": "Preparing (Does not affect stock)",
+        "sent": "Sent (Decreases Warehouse Stock)",
+        "delivered": "Delivered (Decreases Warehouse Stock)"
+      },
+      "addBook": "Add",
+      "submit": "Submit Shipment",
+      "linesColumns": {
+        "book": "Book",
+        "quantity": "Quantity",
+        "action": "Action"
+      },
+      "emptyLines": "No books have been added to the shipment yet.",
+      "errors": {
+        "selectBookAndQty": "Please select a book and valid quantity.",
+        "selectPartner": "Please select a partner.",
+        "addBooks": "Please add at least one book to the shipment.",
+        "createFailed": "Error creating shipment. Check if there is sufficient stock."
+      },
+      "confirmSent": "The shipment will be recorded with status \"{{status}}\".\nThis will automatically decrease warehouse stock. Continue?",
+      "confirmPreparing": "The shipment will be recorded as \"Preparing\"."
+    }
+  },
+  "settlements": {
+    "list": {
+      "title": "Consignment Settlements",
+      "subtitle": "Record sales reported by partners and corresponding collections.",
+      "newSettlement": "New Settlement",
+      "columns": {
+        "idDate": "ID / Report Date",
+        "partner": "Partner",
+        "period": "Period",
+        "hasDetail": "Detailed Records",
+        "salesValue": "Sales Value (€)",
+        "receivedAmount": "Collected Amount (€)",
+        "notes": "Notes"
+      },
+      "periodStart": "Start",
+      "periodEnd": "End",
+      "hasDetailYes": "Yes (With books)",
+      "hasDetailNo": "No (Amount only)",
+      "empty": "No settlements found. Click \"New Settlement\" to record partner sales reports."
+    },
+    "form": {
+      "title": "Record Settlement",
+      "subtitle": "Record book sales from a consignment partner and the collected amount.",
+      "detailsTitle": "Settlement Details",
+      "booksTitle": "Books Sold",
+      "totalValue": "Total Value: {{amount}}€",
+      "fields": {
+        "partner": "Partner (Consignment)",
+        "partnerPlaceholder": "-- Select Partner --",
+        "reportedDate": "Settlement / Report Date",
+        "periodStart": "Period Start",
+        "periodEnd": "Period End",
+        "hasQuantityDetail": "Record detailed sales per book",
+        "receivedAmount": "Amount Collected (€)",
+        "receivedAmountPlaceholder": "e.g. 120.00",
+        "receivedAmountHint": "This amount will be automatically recorded as a Payment (Credit) in the partner's ledger.",
+        "notes": "Notes",
+        "notesPlaceholder": "e.g. Bank deposit at Piraeus Bank...",
+        "selectBook": "Select Book",
+        "bookPlaceholder": "-- Select --",
+        "quantity": "Quantity",
+        "unitPrice": "Publisher Price (€)",
+        "unitPriceHint": "* Publisher price is automatically suggested based on the partner's discount (50% default)."
+      },
+      "addBook": "Add Book",
+      "submit": "Submit Settlement",
+      "linesColumns": {
+        "book": "Book",
+        "quantity": "Quantity",
+        "unitPrice": "Unit Price (€)",
+        "total": "Total (€)",
+        "action": "Action"
+      },
+      "emptyLines": "No sold books have been added yet.",
+      "noDetailTitle": "Payment Only (No books)",
+      "noDetailDesc": "This settlement will only record the money collected, without affecting stock or analyzing sales per book.",
+      "errors": {
+        "selectPartner": "Please select a partner.",
+        "addBooks": "Please add at least one book or disable detailed records.",
+        "selectBookQtyPrice": "Please select a book, valid quantity, and price.",
+        "createFailed": "Error recording settlement."
+      },
+      "confirmTitle": "Submit settlement?",
+      "confirmSalesValue": "Sales Value: {{amount}}€",
+      "confirmReceivedAmount": "Collected Amount: {{amount}}€",
+      "confirmStockNote": "This will automatically decrease the partner's stock for the declared books."
+    }
+  },
+  "directSales": {
+    "list": {
+      "title": "Direct & Retail Sales",
+      "subtitle": "Record direct sales (e.g. at book festivals, self-managed spaces, or retail).",
+      "newSale": "New Sale",
+      "columns": {
+        "idDate": "ID / Sale Date",
+        "event": "Event / Festival",
+        "partner": "Partner (If any)",
+        "booksQuantity": "Books / Quantities",
+        "totalValue": "Total Value (€)",
+        "notes": "Notes"
+      },
+      "anonymousRetail": "Direct Retail",
+      "empty": "No direct sales found. Click \"New Sale\" to record retail sales at festivals etc."
+    },
+    "form": {
+      "title": "Record Sale",
+      "subtitle": "Record a direct sale, festival, or direct retail/wholesale sale.",
+      "detailsTitle": "Sale Details",
+      "booksTitle": "Sale Books",
+      "totalValue": "Total Value: {{amount}}€",
+      "fields": {
+        "saleDate": "Sale Date",
+        "eventName": "Event / Festival Name",
+        "eventPlaceholder": "e.g. 14th Book Festival, or leave empty for Retail",
+        "partner": "Partner (Optional)",
+        "partnerNone": "-- None (Anonymous Retail) --",
+        "partnerHint": "If a partner is selected, the payment will be associated with their ledger, but no debt will be created (it is a direct sale).",
+        "notes": "Notes / Comments",
+        "notesPlaceholder": "e.g. Cash payment...",
+        "selectBook": "Select Book",
+        "bookPlaceholder": "-- Select --",
+        "bookOption": "{{title}} (Stock: {{count}})",
+        "quantity": "Quantity",
+        "unitPrice": "Unit Price (€)",
+        "stock": "Stock"
+      },
+      "addBook": "Add Book",
+      "submit": "Submit Sale",
+      "linesColumns": {
+        "book": "Book",
+        "quantity": "Quantity",
+        "unitPrice": "Unit Price (€)",
+        "total": "Total (€)",
+        "action": "Action"
+      },
+      "emptyLines": "No sold books have been added yet.",
+      "errors": {
+        "selectBookQtyPrice": "Please select a book, valid quantity, and price.",
+        "addBooks": "Please add at least one book.",
+        "createFailed": "Error recording sale. Make sure there is sufficient stock."
+      },
+      "confirmTitle": "Submit sale?",
+      "confirmTotal": "Total Amount: {{amount}}€",
+      "confirmNote": "This will automatically decrease warehouse stock and record a direct collection (Payment) of equal amount."
+    }
+  },
+  "payments": {
+    "list": {
+      "title": "Collections & Payments",
+      "subtitle": "Record revenue and collections from book sales.",
+      "newPayment": "Record Payment",
+      "columns": {
+        "idDate": "ID / Payment Date",
+        "partner": "Partner",
+        "source": "Source",
+        "amount": "Collected Amount (€)",
+        "related": "Related Settl./Sale",
+        "notes": "Notes / Reason"
+      },
+      "anonymousRetail": "Anonymous Retail",
+      "relatedSettlement": "Settlement #{{id}}",
+      "relatedDirectSale": "Retail #{{id}}",
+      "empty": "No collections found. Record a new payment or settlement."
+    },
+    "sources": {
+      "consignmentSettlement": "Settlement",
+      "directSale": "Retail Sale",
+      "manual": "Manual Entry",
+      "donation": "Donation / Sponsorship",
+      "otherIncome": "Other Income"
+    },
+    "form": {
+      "title": "Record Revenue / Payment",
+      "subtitle": "Record a payment from a partner, a donation, or other extraordinary income for the publishing house.",
+      "fields": {
+        "source": "Revenue Category",
+        "partner": "Partner",
+        "partnerNone": "-- None / Anonymous Income (Donations etc) --",
+        "partnerHint": "If a partner is selected, the amount will appear in their ledger. For general donations or grants you can leave it empty.",
+        "paymentDate": "Collection Date",
+        "amount": "Amount (€)",
+        "amountPlaceholder": "e.g. 150.00",
+        "notes": "Notes / Reason",
+        "notesPlaceholder": "e.g. Donation from supporter, deposit at Alpha Bank..."
+      },
+      "sourceOptions": {
+        "manual": "Manual Partner Payment (Ledger)",
+        "donation": "Donation / Sponsorship",
+        "otherIncome": "Other Income / Grant"
+      },
+      "submit": "Submit",
+      "errors": {
+        "selectPartner": "For manual partner payment, you must select a partner.",
+        "invalidAmount": "Please enter a valid amount.",
+        "createFailed": "Error recording payment."
+      },
+      "confirmTitle": "Record revenue of {{amount}}€?"
+    }
+  },
+  "backendErrors": {
+    "bookNotFound": "Book not found.",
+    "partnerNotFound": "Partner not found.",
+    "shipmentNotFound": "Shipment not found.",
+    "settlementNotFound": "Settlement not found.",
+    "directSaleNotFound": "Direct sale not found.",
+    "expenseNotFound": "Expense not found.",
+    "onlyManualMovements": "Only manual stock movement types are allowed.",
+    "userNotFound": "User not found.",
+    "oldPasswordIncorrect": "Old password is incorrect.",
+    "unexpectedError": "An unexpected error occurred."
+  },
+  "expenses": {
+    "list": {
+      "title": "Publishing House Expenses",
+      "subtitle": "Record and track publishing and operational expenses (printing, royalties, etc.).",
+      "newExpense": "New Expense",
+      "allCategories": "All Expense Categories",
+      "columns": {
+        "date": "Date",
+        "description": "Description",
+        "category": "Category",
+        "amount": "Amount (€)",
+        "notes": "Notes",
+        "actions": "Actions"
+      },
+      "confirmDelete": "Are you sure you want to delete this expense?",
+      "deleteError": "Error deleting expense.",
+      "empty": "No expenses found. Click \"New Expense\" to record an expense."
+    },
+    "categories": {
+      "printing": "Printing (Print House)",
+      "translation": "Translation",
+      "royalties": "Royalties",
+      "shipping": "Shipping / Courier",
+      "rentUtilities": "Rent / Utilities",
+      "officeSupplies": "Office Supplies",
+      "marketing": "Marketing / Promotion",
+      "other": "Miscellaneous / Other"
+    },
+    "form": {
+      "titleNew": "Record New Expense",
+      "titleEdit": "Edit Expense",
+      "subtitleNew": "Add a new publishing or operational expense to the system.",
+      "subtitleEdit": "Modify the details of the recorded expense.",
+      "fields": {
+        "description": "Expense Description",
+        "descriptionPlaceholder": "e.g. Printing of book \"The Manifesto\" (1000 copies)",
+        "amount": "Amount (€)",
+        "amountPlaceholder": "e.g. 1200.00",
+        "expenseDate": "Expense Date",
+        "category": "Expense Category",
+        "notes": "Notes / Comments",
+        "notesPlaceholder": "e.g. Payment by 30-day check, invoice #123..."
+      },
+      "submitNew": "Submit",
+      "submitEdit": "Save",
+      "errors": {
+        "loadFailed": "Error loading expense.",
+        "requiredFields": "Please fill in all required fields with valid values.",
+        "updateFailed": "Error updating expense.",
+        "createFailed": "Error creating expense."
+      }
+    }
+  }
+}

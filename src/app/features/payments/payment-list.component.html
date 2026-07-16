@@ -1,0 +1,71 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ 'payments.list.title' | translate }}</h1>
+    <p style="color: var(--text-muted)">{{ 'payments.list.subtitle' | translate }}</p>
+  </div>
+  <div>
+    <a routerLink="/payments/new" class="btn btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+      {{ 'payments.list.newPayment' | translate }}
+    </a>
+  </div>
+</div>
+
+<div class="glass-card">
+  <div class="table-container">
+    @if (payments.length > 0) {
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>{{ 'payments.list.columns.idDate' | translate }}</th>
+            <th>{{ 'payments.list.columns.partner' | translate }}</th>
+            <th>{{ 'payments.list.columns.source' | translate }}</th>
+            <th style="text-align: right;">{{ 'payments.list.columns.amount' | translate }}</th>
+            <th>{{ 'payments.list.columns.related' | translate }}</th>
+            <th>{{ 'payments.list.columns.notes' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of payments; track p.id) {
+            <tr>
+              <td>
+                <div style="font-weight: 600; color: var(--text-main);">#{{ p.id }}</div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">{{ p.paymentDate | date:'dd/MM/yyyy' }}</div>
+              </td>
+              <td style="font-weight: 500;">{{ p.partnerName || ('payments.list.anonymousRetail' | translate) }}</td>
+              <td>
+                <span class="badge" [ngClass]="getSourceBadgeClass(p.source)">
+                  {{ getSourceLabel(p.source) }}
+                </span>
+              </td>
+              <td style="text-align: right; font-weight: 700; color: var(--success); font-size: 1.05rem;">
+                {{ p.amount | number:'1.2-2' }}€
+              </td>
+              <td>
+                @if (p.source === 'CONSIGNMENT_SETTLEMENT') {
+                  <span style="color: var(--text-muted);">{{ 'payments.list.relatedSettlement' | translate: { id: p.relatedSettlementId } }}</span>
+                } @else if (p.source === 'DIRECT_SALE') {
+                  <span style="color: var(--text-muted);">{{ 'payments.list.relatedDirectSale' | translate: { id: p.relatedDirectSaleId } }}</span>
+                } @else {
+                  <span style="color: var(--text-muted);">-</span>
+                }
+              </td>
+              <td style="font-size: 0.85rem; color: var(--text-muted); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                {{ p.notes || '-' }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.5;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+        <p>{{ 'payments.list.empty' | translate }}</p>
+      </div>
+    }
+  </div>
+</div>

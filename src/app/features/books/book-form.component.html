@@ -1,0 +1,162 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ isEditMode ? ('books.form.titleEdit' | translate) : ('books.form.titleNew' | translate) }}</h1>
+    <p style="color: var(--text-muted)">
+      {{ isEditMode ? ('books.form.subtitleEdit' | translate) : ('books.form.subtitleNew' | translate) }}
+    </p>
+  </div>
+  <div>
+    <a routerLink="/books" class="btn btn-secondary">{{ 'common.actions.cancel' | translate }}</a>
+  </div>
+</div>
+
+<div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+  <form (ngSubmit)="onSubmit()" #bookForm="ngForm">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+      
+      <!-- Τίτλος -->
+      <div class="form-group" style="grid-column: span 2;">
+        <label class="form-label">{{ 'books.form.fields.title' | translate }} <span style="color: var(--danger)">*</span></label>
+        <input 
+          type="text" 
+          [(ngModel)]="book.title" 
+          name="title" 
+          required 
+          class="form-input" 
+          [placeholder]="'books.form.fields.titlePlaceholder' | translate"
+        />
+      </div>
+
+      <!-- Συγγραφέας -->
+      <div class="form-group">
+        <label class="form-label">{{ 'books.form.fields.author' | translate }} <span style="color: var(--danger)">*</span></label>
+        <input 
+          type="text" 
+          [(ngModel)]="book.author" 
+          name="author" 
+          required 
+          class="form-input" 
+          [placeholder]="'books.form.fields.authorPlaceholder' | translate"
+        />
+      </div>
+
+      <!-- ISBN -->
+      <div class="form-group">
+        <label class="form-label">{{ 'books.form.fields.isbn' | translate }}</label>
+        <input 
+          type="text" 
+          [(ngModel)]="book.isbn" 
+          name="isbn" 
+          class="form-input" 
+          [placeholder]="'books.form.fields.isbnPlaceholder' | translate"
+        />
+      </div>
+
+      <!-- Imprint (Εκδόσεις) -->
+      <div class="form-group">
+        <label class="form-label">{{ 'books.form.fields.imprint' | translate }}</label>
+        <input 
+          type="text" 
+          [(ngModel)]="book.publisherImprint" 
+          name="publisherImprint" 
+          class="form-input" 
+          [placeholder]="'books.form.fields.imprintPlaceholder' | translate"
+        />
+      </div>
+
+      <!-- Ημερομηνία Έκδοσης -->
+      <div class="form-group">
+        <label class="form-label">{{ 'books.form.fields.publicationDate' | translate }}</label>
+        <input 
+          type="date" 
+          [(ngModel)]="book.publicationDate" 
+          name="publicationDate" 
+          class="form-input"
+        />
+      </div>
+
+      <div style="grid-column: span 2; border-bottom: 1px solid var(--card-border); margin: 0.5rem 0;"></div>
+
+      <!-- Λιανική Τιμή Πώλησης (ΛΤΠ) -->
+      <div class="form-group">
+        <label class="form-label">{{ 'books.form.fields.retailPrice' | translate }} <span style="color: var(--danger)">*</span></label>
+        <input 
+          type="number" 
+          step="0.01" 
+          [(ngModel)]="book.retailPrice" 
+          name="retailPrice" 
+          required 
+          class="form-input" 
+          placeholder="10.00"
+        />
+        <span style="font-size: 0.75rem; color: var(--text-muted)">{{ 'books.form.fields.retailPriceHint' | translate }}</span>
+      </div>
+
+      <!-- Κόστος Παραγωγής -->
+      <div class="form-group">
+        <label class="form-label">{{ 'books.form.fields.productionCost' | translate }}</label>
+        <input 
+          type="number" 
+          step="0.01" 
+          [(ngModel)]="book.productionCost" 
+          name="productionCost" 
+          class="form-input" 
+          placeholder="2.50"
+        />
+        <span style="font-size: 0.75rem; color: var(--text-muted)">{{ 'books.form.fields.productionCostHint' | translate }}</span>
+      </div>
+
+      <!-- Προεπιλεγμένο Ποσοστό Εκδότη -->
+      <div class="form-group">
+        <label class="form-label">{{ 'books.form.fields.publisherShare' | translate }}</label>
+        <input 
+          type="number" 
+          step="0.01" 
+          min="0" 
+          max="1" 
+          [(ngModel)]="book.publisherSharePercentDefault" 
+          name="publisherSharePercentDefault" 
+          class="form-input" 
+          placeholder="0.50"
+        />
+        <span style="font-size: 0.75rem; color: var(--text-muted)">{{ 'books.form.fields.publisherShareHint' | translate }}</span>
+      </div>
+
+      <!-- Προεπιλεγμένη Τιμή DIY -->
+      <div class="form-group">
+        <label class="form-label">{{ 'books.form.fields.diyPrice' | translate }}</label>
+        <input 
+          type="number" 
+          step="0.01" 
+          [(ngModel)]="book.diyPriceDefault" 
+          name="diyPriceDefault" 
+          class="form-input" 
+          [placeholder]="'books.form.fields.diyPricePlaceholder' | translate"
+        />
+        <span style="font-size: 0.75rem; color: var(--text-muted)">{{ 'books.form.fields.diyPriceHint' | translate }}</span>
+      </div>
+
+      <!-- Κατάσταση Ενεργό/Ανενεργό -->
+      <div class="form-group" style="grid-column: span 2; display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+        <input 
+          type="checkbox" 
+          [(ngModel)]="book.active" 
+          name="active" 
+          id="active"
+          style="width: 18px; height: 18px; cursor: pointer;"
+        />
+        <label for="active" style="cursor: pointer; font-size: 0.95rem; font-weight: 500;">
+          {{ 'books.form.fields.activeCheckbox' | translate }}
+        </label>
+      </div>
+
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+      <a routerLink="/books" class="btn btn-secondary">{{ 'common.actions.cancel' | translate }}</a>
+      <button type="submit" class="btn btn-primary" [disabled]="!bookForm.form.valid">
+        {{ isEditMode ? ('books.form.submitEdit' | translate) : ('books.form.submitNew' | translate) }}
+      </button>
+    </div>
+  </form>
+</div>

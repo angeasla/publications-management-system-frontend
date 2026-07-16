@@ -1,0 +1,98 @@
+.metric-card {
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+  line-height: 1;
+}
+
+.metric-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.border-danger {
+  border: 1px solid rgba(239, 68, 68, 0.4) !important;
+}
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  .print-hidden {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-family: 'Times New Roman', Times, serif !important;
+  }
+
+  .glass-card {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .metric-card {
+    border: 1px solid #ccc !important;
+    border-radius: 0 !important;
+    padding: 1rem !important;
+    text-align: left !important;
+  }
+
+  .metric-value {
+    color: #000 !important;
+    font-size: 1.75rem !important;
+  }
+
+  .custom-table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  .custom-table th, 
+  .custom-table td {
+    border: 1px solid #ddd !important;
+    padding: 8px !important;
+    color: #000 !important;
+    background: none !important;
+  }
+
+  .custom-table th {
+    background-color: #f2f2f2 !important;
+    font-weight: bold !important;
+  }
+
+  .text-danger {
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+
+  .text-success {
+    color: #000 !important;
+  }
+}

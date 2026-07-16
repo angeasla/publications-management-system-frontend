@@ -1,0 +1,90 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ isEditMode ? ('expenses.form.titleEdit' | translate) : ('expenses.form.titleNew' | translate) }}</h1>
+    <p style="color: var(--text-muted)">
+      {{ isEditMode ? ('expenses.form.subtitleEdit' | translate) : ('expenses.form.subtitleNew' | translate) }}
+    </p>
+  </div>
+  <div>
+    <a routerLink="/expenses" class="btn btn-secondary">{{ 'common.actions.cancel' | translate }}</a>
+  </div>
+</div>
+
+<div class="glass-card" style="max-width: 600px; margin: 0 auto;">
+  <form (ngSubmit)="onSubmit()" #expenseForm="ngForm">
+    
+    <!-- Περιγραφή -->
+    <div class="form-group">
+      <label class="form-label">{{ 'expenses.form.fields.description' | translate }} <span style="color: var(--danger)">*</span></label>
+      <input 
+        type="text" 
+        [(ngModel)]="expense.description" 
+        name="description" 
+        required 
+        class="form-input" 
+        [placeholder]="'expenses.form.fields.descriptionPlaceholder' | translate"
+      />
+    </div>
+
+    <!-- Ποσό -->
+    <div class="form-group">
+      <label class="form-label">{{ 'expenses.form.fields.amount' | translate }} <span style="color: var(--danger)">*</span></label>
+      <input 
+        type="number" 
+        step="0.01" 
+        min="0.01" 
+        [(ngModel)]="expense.amount" 
+        name="amount" 
+        required 
+        class="form-input" 
+        [placeholder]="'expenses.form.fields.amountPlaceholder' | translate"
+      />
+    </div>
+
+    <!-- Ημερομηνία -->
+    <div class="form-group">
+      <label class="form-label">{{ 'expenses.form.fields.expenseDate' | translate }} <span style="color: var(--danger)">*</span></label>
+      <input 
+        type="date" 
+        [(ngModel)]="expense.expenseDate" 
+        name="expenseDate" 
+        required 
+        class="form-input"
+      />
+    </div>
+
+    <!-- Κατηγορία -->
+    <div class="form-group">
+      <label class="form-label">{{ 'expenses.form.fields.category' | translate }} <span style="color: var(--danger)">*</span></label>
+      <select [(ngModel)]="expense.category" name="category" required class="form-select">
+        <option value="PRINTING">{{ 'expenses.categories.printing' | translate }}</option>
+        <option value="TRANSLATION">{{ 'expenses.categories.translation' | translate }}</option>
+        <option value="ROYALTIES">{{ 'expenses.categories.royalties' | translate }}</option>
+        <option value="SHIPPING">{{ 'expenses.categories.shipping' | translate }}</option>
+        <option value="RENT_UTILITIES">{{ 'expenses.categories.rentUtilities' | translate }}</option>
+        <option value="OFFICE_SUPPLIES">{{ 'expenses.categories.officeSupplies' | translate }}</option>
+        <option value="MARKETING">{{ 'expenses.categories.marketing' | translate }}</option>
+        <option value="OTHER">{{ 'expenses.categories.other' | translate }}</option>
+      </select>
+    </div>
+
+    <!-- Σημειώσεις -->
+    <div class="form-group">
+      <label class="form-label">{{ 'expenses.form.fields.notes' | translate }}</label>
+      <textarea 
+        [(ngModel)]="expense.notes" 
+        name="notes" 
+        class="form-textarea" 
+        [placeholder]="'expenses.form.fields.notesPlaceholder' | translate"
+      ></textarea>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+      <a routerLink="/expenses" class="btn btn-secondary">{{ 'common.actions.cancel' | translate }}</a>
+      <button type="submit" class="btn btn-primary" [disabled]="!expenseForm.form.valid || expense.amount <= 0">
+        {{ isEditMode ? ('expenses.form.submitEdit' | translate) : ('expenses.form.submitNew' | translate) }}
+      </button>
+    </div>
+
+  </form>
+</div>

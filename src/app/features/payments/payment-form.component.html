@@ -1,0 +1,64 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ 'payments.form.title' | translate }}</h1>
+    <p style="color: var(--text-muted)">{{ 'payments.form.subtitle' | translate }}</p>
+  </div>
+  <div>
+    <a routerLink="/payments" class="btn btn-secondary">{{ 'common.actions.cancel' | translate }}</a>
+  </div>
+</div>
+
+<div class="glass-card" style="max-width: 600px; margin: 0 auto;">
+  <form (ngSubmit)="onSubmit()" #paymentForm="ngForm">
+    
+    <!-- Κατηγορία Εσόδου -->
+    <div class="form-group">
+      <label class="form-label">{{ 'payments.form.fields.source' | translate }} <span style="color: var(--danger)">*</span></label>
+      <select [(ngModel)]="source" name="source" required class="form-select">
+        <option value="MANUAL">{{ 'payments.form.sourceOptions.manual' | translate }}</option>
+        <option value="DONATION">{{ 'payments.form.sourceOptions.donation' | translate }}</option>
+        <option value="OTHER_INCOME">{{ 'payments.form.sourceOptions.otherIncome' | translate }}</option>
+      </select>
+    </div>
+
+    <!-- Συνεργάτης -->
+    <div class="form-group">
+      <label class="form-label">{{ 'payments.form.fields.partner' | translate }} <span *ngIf="source === 'MANUAL'" style="color: var(--danger)">*</span></label>
+      <select [(ngModel)]="partnerId" name="partnerId" class="form-select">
+        <option [value]="0">{{ 'payments.form.fields.partnerNone' | translate }}</option>
+        @for (partner of partners; track partner.id) {
+          <option [value]="partner.id">{{ 'common.partnerOption' | translate: { name: partner.name, category: partner.category } }}</option>
+        }
+      </select>
+      <span style="font-size: 0.75rem; color: var(--text-muted)">
+        {{ 'payments.form.fields.partnerHint' | translate }}
+      </span>
+    </div>
+
+    <!-- Ημερομηνία Πληρωμής -->
+    <div class="form-group">
+      <label class="form-label">{{ 'payments.form.fields.paymentDate' | translate }} <span style="color: var(--danger)">*</span></label>
+      <input type="date" [(ngModel)]="paymentDate" name="paymentDate" required class="form-input" />
+    </div>
+
+    <!-- Ποσό -->
+    <div class="form-group">
+      <label class="form-label">{{ 'payments.form.fields.amount' | translate }} <span style="color: var(--danger)">*</span></label>
+      <input type="number" step="0.01" min="0.01" [(ngModel)]="amount" name="amount" required class="form-input" [placeholder]="'payments.form.fields.amountPlaceholder' | translate" />
+    </div>
+
+    <!-- Σημειώσεις -->
+    <div class="form-group">
+      <label class="form-label">{{ 'payments.form.fields.notes' | translate }}</label>
+      <textarea [(ngModel)]="notes" name="notes" class="form-textarea" [placeholder]="'payments.form.fields.notesPlaceholder' | translate"></textarea>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+      <a routerLink="/payments" class="btn btn-secondary">{{ 'common.actions.cancel' | translate }}</a>
+      <button type="submit" class="btn btn-primary" [disabled]="!paymentForm.form.valid || (source === 'MANUAL' && partnerId === 0) || amount <= 0">
+        {{ 'payments.form.submit' | translate }}
+      </button>
+    </div>
+
+  </form>
+</div>

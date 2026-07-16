@@ -1,0 +1,150 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ 'dashboard.title' | translate }}</h1>
+    <p style="color: var(--text-muted)">{{ 'dashboard.subtitle' | translate }}</p>
+  </div>
+</div>
+
+@if (loading) {
+  <div style="text-align: center; padding: 5rem; color: var(--text-muted);">
+    <p>{{ 'dashboard.loading' | translate }}</p>
+  </div>
+} @else if (summary) {
+  
+  <!-- Financial stats grid -->
+  <div class="grid-cols-3" style="margin-bottom: 2rem;">
+    
+    <!-- Gross Revenue -->
+    <div class="glass-card metric-card" style="border-top: 4px solid var(--success);">
+      <span class="metric-label">{{ 'dashboard.metrics.grossRevenue' | translate }}</span>
+      <div class="metric-value" style="color: var(--success);">
+        {{ summary.grossRevenues | number:'1.2-2' }}€
+      </div>
+      <span class="metric-desc">{{ 'dashboard.metrics.grossRevenueDesc' | translate }}</span>
+    </div>
+
+    <!-- Total Expenses -->
+    <div class="glass-card metric-card" style="border-top: 4px solid var(--danger);">
+      <span class="metric-label">{{ 'dashboard.metrics.totalExpenses' | translate }}</span>
+      <div class="metric-value" style="color: var(--danger);">
+        {{ summary.totalExpenses | number:'1.2-2' }}€
+      </div>
+      <span class="metric-desc">{{ 'dashboard.metrics.totalExpensesDesc' | translate }}</span>
+    </div>
+
+    <!-- Net Cash Flow -->
+    <div class="glass-card metric-card" style="border-top: 4px solid var(--accent-color);">
+      <span class="metric-label">{{ 'dashboard.metrics.netCashFlow' | translate }}</span>
+      <div class="metric-value" [class.text-success]="summary.netCashFlow >= 0" [class.text-danger]="summary.netCashFlow < 0">
+        {{ summary.netCashFlow | number:'1.2-2' }}€
+      </div>
+      <span class="metric-desc">{{ 'dashboard.metrics.netCashFlowDesc' | translate }}</span>
+    </div>
+
+  </div>
+
+  <!-- Inventory and Sales metrics -->
+  <div class="grid-cols-3" style="margin-bottom: 2rem;">
+    
+    <div class="glass-card metric-card">
+      <span class="metric-label">{{ 'dashboard.metrics.activeTitles' | translate }}</span>
+      <div class="metric-value">{{ summary.activeBooksCount }}</div>
+      <span class="metric-desc">{{ 'dashboard.metrics.activeTitlesDesc' | translate }}</span>
+    </div>
+
+    <div class="glass-card metric-card">
+      <span class="metric-label">{{ 'dashboard.metrics.printedCopies' | translate }}</span>
+      <div class="metric-value" style="color: var(--accent-color);">{{ summary.totalPrintedCopies }}</div>
+      <span class="metric-desc">{{ 'dashboard.metrics.printedCopiesDesc' | translate }}</span>
+    </div>
+
+    <div class="glass-card metric-card">
+      <span class="metric-label">{{ 'dashboard.metrics.soldCopies' | translate }}</span>
+      <div class="metric-value" style="color: var(--success);">{{ summary.totalSoldCopies }}</div>
+      <span class="metric-desc">{{ 'dashboard.metrics.soldCopiesDesc' | translate: { percent: (summary.totalPrintedCopies > 0 ? (summary.totalSoldCopies / summary.totalPrintedCopies * 100) : 0) | number:'1.0-0' } }}</span>
+    </div>
+
+  </div>
+
+  <!-- Bottom section: Top books & Quick links -->
+  <div class="grid-cols-1-2">
+    
+    <!-- Left: Top Selling Books -->
+    <div class="glass-card">
+      <h3 style="margin-bottom: 1.25rem; font-size: 1.1rem; font-weight: 600; color: var(--accent-color);">
+        {{ 'dashboard.topBooks.title' | translate }}
+      </h3>
+
+      <div class="table-container">
+        @if (summary.topSellingBooks.length > 0) {
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>{{ 'dashboard.topBooks.bookTitle' | translate }}</th>
+                <th style="text-align: right;">{{ 'dashboard.topBooks.copiesSold' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (book of summary.topSellingBooks; track book.bookId) {
+                <tr>
+                  <td style="font-weight: 500; color: var(--text-main);">{{ book.title }}</td>
+                  <td style="text-align: right; font-weight: 700; color: var(--accent-color); font-size: 1.05rem;">
+                    {{ book.quantitySold }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+            {{ 'dashboard.topBooks.noSales' | translate }}
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Right: Quick Actions and Navigation links -->
+    <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <h3 style="margin-bottom: 1.25rem; font-size: 1.1rem; font-weight: 600; color: var(--accent-color);">
+          {{ 'dashboard.quickActions.title' | translate }}
+        </h3>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          
+          <a routerLink="/books/new" class="btn btn-secondary" style="justify-content: center; padding: 0.75rem;">
+            {{ 'dashboard.quickActions.newBook' | translate }}
+          </a>
+          
+          <a routerLink="/shipments/new" class="btn btn-secondary" style="justify-content: center; padding: 0.75rem;">
+            {{ 'dashboard.quickActions.newShipment' | translate }}
+          </a>
+
+          <a routerLink="/settlements/new" class="btn btn-secondary" style="justify-content: center; padding: 0.75rem;">
+            {{ 'dashboard.quickActions.newSettlement' | translate }}
+          </a>
+
+          <a routerLink="/direct-sales/new" class="btn btn-secondary" style="justify-content: center; padding: 0.75rem;">
+            {{ 'dashboard.quickActions.newDirectSale' | translate }}
+          </a>
+
+          <a routerLink="/payments/new" class="btn btn-secondary" style="justify-content: center; padding: 0.75rem; grid-column: span 2;">
+            {{ 'dashboard.quickActions.newPayment' | translate }}
+          </a>
+
+        </div>
+      </div>
+
+      <div style="margin-top: 1.5rem; border-top: 1px solid var(--card-border); padding-top: 1rem;">
+        <h4 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-muted)">
+          {{ 'dashboard.quickActions.financialTitle' | translate }}
+        </h4>
+        <a routerLink="/partners/statement" class="btn btn-primary" style="width: 100%; justify-content: center;">
+          {{ 'dashboard.quickActions.viewLedger' | translate }}
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+}

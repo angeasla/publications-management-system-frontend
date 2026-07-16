@@ -1,0 +1,119 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ isEditMode ? ('partners.form.titleEdit' | translate) : ('partners.form.titleNew' | translate) }}</h1>
+    <p style="color: var(--text-muted)">
+      {{ isEditMode ? ('partners.form.subtitleEdit' | translate) : ('partners.form.subtitleNew' | translate) }}
+    </p>
+  </div>
+  <div>
+    <a routerLink="/partners" class="btn btn-secondary">{{ 'common.actions.cancel' | translate }}</a>
+  </div>
+</div>
+
+<div class="glass-card" style="max-width: 700px; margin: 0 auto;">
+  <form (ngSubmit)="onSubmit()" #partnerForm="ngForm">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+      
+      <!-- Όνομα -->
+      <div class="form-group" style="grid-column: span 2;">
+        <label class="form-label">{{ 'partners.form.fields.name' | translate }} <span style="color: var(--danger)">*</span></label>
+        <input 
+          type="text" 
+          [(ngModel)]="partner.name" 
+          name="name" 
+          required 
+          class="form-input" 
+          [placeholder]="'partners.form.fields.namePlaceholder' | translate"
+        />
+      </div>
+
+      <!-- Κατηγορία -->
+      <div class="form-group">
+        <label class="form-label">{{ 'partners.form.fields.category' | translate }} <span style="color: var(--danger)">*</span></label>
+        <select [(ngModel)]="partner.category" name="category" required class="form-select">
+          <option value="BOOKSTORE">{{ 'partners.categories.bookstore' | translate }}</option>
+          <option value="WAREHOUSE_DISTRIBUTOR">{{ 'partners.categories.warehouseDistributor' | translate }}</option>
+          <option value="DIY_SPACE">{{ 'partners.categoryOptions.diySpace' | translate }}</option>
+          <option value="FESTIVAL">{{ 'partners.categories.festival' | translate }}</option>
+          <option value="SCHOOL">{{ 'partners.categories.school' | translate }}</option>
+          <option value="LIBRARY">{{ 'partners.categories.library' | translate }}</option>
+          <option value="INDIVIDUAL">{{ 'partners.categories.individual' | translate }}</option>
+        </select>
+      </div>
+
+      <!-- Τύπος Συναλλαγής -->
+      <div class="form-group">
+        <label class="form-label">{{ 'partners.form.fields.channelType' | translate }} <span style="color: var(--danger)">*</span></label>
+        <select [(ngModel)]="partner.channelType" name="channelType" required class="form-select">
+          <option value="CONSIGNMENT">{{ 'partners.channelTypeOptions.consignment' | translate }}</option>
+          <option value="DIRECT_SALE">{{ 'partners.channelTypeOptions.directSale' | translate }}</option>
+        </select>
+        <span style="font-size: 0.75rem; color: var(--text-muted)">
+          {{ 'partners.form.fields.channelTypeHint' | translate }}
+        </span>
+      </div>
+
+      <!-- Ειδικό Ποσοστό Εκδότη -->
+      <div class="form-group" style="grid-column: span 2;">
+        <label class="form-label">{{ 'partners.form.fields.publisherShareOverride' | translate }}</label>
+        <input 
+          type="number" 
+          step="0.01" 
+          min="0" 
+          max="1" 
+          [(ngModel)]="partner.publisherSharePercentOverride" 
+          name="publisherSharePercentOverride" 
+          class="form-input" 
+          [placeholder]="'partners.form.fields.publisherSharePlaceholder' | translate"
+        />
+        <span style="font-size: 0.75rem; color: var(--text-muted)">
+          {{ 'partners.form.fields.publisherShareHint' | translate }}
+        </span>
+      </div>
+
+      <!-- Στοιχεία Επικοινωνίας -->
+      <div class="form-group" style="grid-column: span 2;">
+        <label class="form-label">{{ 'partners.form.fields.contactInfo' | translate }}</label>
+        <textarea 
+          [(ngModel)]="partner.contactInfo" 
+          name="contactInfo" 
+          class="form-textarea" 
+          [placeholder]="'partners.form.fields.contactPlaceholder' | translate"
+        ></textarea>
+      </div>
+
+      <!-- Σημειώσεις -->
+      <div class="form-group" style="grid-column: span 2;">
+        <label class="form-label">{{ 'partners.form.fields.notes' | translate }}</label>
+        <textarea 
+          [(ngModel)]="partner.notes" 
+          name="notes" 
+          class="form-textarea" 
+          [placeholder]="'partners.form.fields.notesPlaceholder' | translate"
+        ></textarea>
+      </div>
+
+      <!-- Κατάσταση Ενεργός/Ανενεργός -->
+      <div class="form-group" style="grid-column: span 2; display: flex; align-items: center; gap: 0.5rem;">
+        <input 
+          type="checkbox" 
+          [(ngModel)]="partner.active" 
+          name="active" 
+          id="active"
+          style="width: 18px; height: 18px; cursor: pointer;"
+        />
+        <label for="active" style="cursor: pointer; font-size: 0.95rem; font-weight: 500;">
+          {{ 'partners.form.fields.activeCheckbox' | translate }}
+        </label>
+      </div>
+
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+      <a routerLink="/partners" class="btn btn-secondary">{{ 'common.actions.cancel' | translate }}</a>
+      <button type="submit" class="btn btn-primary" [disabled]="!partnerForm.form.valid">
+        {{ isEditMode ? ('partners.form.submitEdit' | translate) : ('partners.form.submitNew' | translate) }}
+      </button>
+    </div>
+  </form>
+</div>

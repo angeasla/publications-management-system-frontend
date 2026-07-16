@@ -1,0 +1,124 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ 'partners.list.title' | translate }}</h1>
+    <p style="color: var(--text-muted)">{{ 'partners.list.subtitle' | translate }}</p>
+  </div>
+  <div>
+    <a routerLink="/partners/new" class="btn btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+      {{ 'partners.list.newPartner' | translate }}
+    </a>
+  </div>
+</div>
+
+<div class="glass-card">
+  <div class="filter-bar" style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 1.5rem;">
+    <!-- Search Input -->
+    <div style="flex-grow: 1; max-width: 350px; position: relative;">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (ngModelChange)="filterPartners()" 
+        [placeholder]="'partners.list.searchPlaceholder' | translate" 
+        class="form-input"
+        style="padding-left: 2.5rem;"
+      />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-muted)">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.637 10.637Z" />
+      </svg>
+    </div>
+
+    <!-- Category Dropdown Filter -->
+    <div style="width: 220px;">
+      <select [(ngModel)]="categoryFilter" (ngModelChange)="filterPartners()" class="form-select">
+        <option value="">{{ 'partners.list.allCategories' | translate }}</option>
+        <option value="WAREHOUSE_DISTRIBUTOR">{{ 'partners.categories.warehouseDistributor' | translate }}</option>
+        <option value="BOOKSTORE">{{ 'partners.categories.bookstore' | translate }}</option>
+        <option value="DIY_SPACE">{{ 'partners.categories.diySpace' | translate }}</option>
+        <option value="FESTIVAL">{{ 'partners.categories.festival' | translate }}</option>
+        <option value="SCHOOL">{{ 'partners.categories.school' | translate }}</option>
+        <option value="LIBRARY">{{ 'partners.categories.library' | translate }}</option>
+        <option value="INDIVIDUAL">{{ 'partners.categories.individual' | translate }}</option>
+      </select>
+    </div>
+
+    <!-- Active Filter -->
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <button 
+        (click)="showActiveOnly = !showActiveOnly; filterPartners()" 
+        class="btn" 
+        [class.btn-primary]="showActiveOnly" 
+        [class.btn-secondary]="!showActiveOnly"
+        style="font-size: 0.85rem; padding: 0.5rem 1rem;"
+      >
+        {{ showActiveOnly ? ('partners.list.showActiveOnly' | translate) : ('partners.list.showAll' | translate) }}
+      </button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    @if (filteredPartners.length > 0) {
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>{{ 'partners.list.columns.name' | translate }}</th>
+            <th>{{ 'partners.list.columns.category' | translate }}</th>
+            <th>{{ 'partners.list.columns.channelType' | translate }}</th>
+            <th>{{ 'partners.list.columns.discount' | translate }}</th>
+            <th>{{ 'partners.list.columns.contact' | translate }}</th>
+            <th style="text-align: center;">{{ 'partners.list.columns.status' | translate }}</th>
+            <th style="text-align: right;">{{ 'partners.list.columns.actions' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (partner of filteredPartners; track partner.id) {
+            <tr>
+              <td style="font-weight: 600; color: var(--text-main);">{{ partner.name }}</td>
+              <td>{{ getCategoryLabel(partner.category) }}</td>
+              <td>
+                <span class="badge" [class.badge-info]="partner.channelType === 'CONSIGNMENT'" [class.badge-success]="partner.channelType === 'DIRECT_SALE'">
+                  {{ getChannelTypeLabel(partner.channelType) }}
+                </span>
+              </td>
+              <td>
+                @if (partner.publisherSharePercentOverride !== null && partner.publisherSharePercentOverride !== undefined) {
+                  {{ 'partners.list.overrideValue' | translate: { percent: partner.publisherSharePercentOverride * 100 } }}
+                } @else {
+                  <span style="color: var(--text-muted)">{{ 'partners.list.overrideDefault' | translate }}</span>
+                }
+              </td>
+              <td style="font-size: 0.85rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                {{ partner.contactInfo || '-' }}
+              </td>
+              <td style="text-align: center;">
+                <span class="badge" [class.badge-success]="partner.active" [class.badge-danger]="!partner.active">
+                  {{ partner.active ? ('common.status.activeMale' | translate) : ('common.status.inactiveMale' | translate) }}
+                </span>
+              </td>
+              <td style="text-align: right;">
+                <div style="display: inline-flex; gap: 0.5rem;">
+                  <!-- Ledger / Statement will link to Partner Card in Phase 3 -->
+                  <a [routerLink]="['/partners/edit', partner.id]" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.85rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px;">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.83 20.062a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                    </svg>
+                    {{ 'common.actions.edit' | translate }}
+                  </a>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.5;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+        </svg>
+        <p>{{ 'partners.list.empty' | translate }}</p>
+      </div>
+    }
+  </div>
+</div>

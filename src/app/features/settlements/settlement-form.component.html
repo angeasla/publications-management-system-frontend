@@ -1,0 +1,186 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ 'settlements.form.title' | translate }}</h1>
+    <p style="color: var(--text-muted)">{{ 'settlements.form.subtitle' | translate }}</p>
+  </div>
+  <div>
+    <a routerLink="/settlements" class="btn btn-secondary">{{ 'common.actions.cancel' | translate }}</a>
+  </div>
+</div>
+
+<div class="grid-cols-1-2">
+  <!-- Left Column: Form Details -->
+  <div class="glass-card">
+    <h3 style="margin-bottom: 1.25rem; font-size: 1.1rem; font-weight: 600; color: var(--accent-color);">
+      {{ 'settlements.form.detailsTitle' | translate }}
+    </h3>
+    
+    <form (ngSubmit)="onSubmit()" #settlementForm="ngForm">
+      <!-- Συνεργάτης -->
+      <div class="form-group">
+        <label class="form-label">{{ 'settlements.form.fields.partner' | translate }} <span style="color: var(--danger)">*</span></label>
+        <select [(ngModel)]="partnerId" name="partnerId" required class="form-select" (change)="onBookOrPartnerChange()">
+          <option value="0" disabled>{{ 'settlements.form.fields.partnerPlaceholder' | translate }}</option>
+          @for (partner of partners; track partner.id) {
+            <option [value]="partner.id">{{ 'common.partnerOption' | translate: { name: partner.name, category: partner.category } }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Ημερομηνία Αναφοράς -->
+      <div class="form-group">
+        <label class="form-label">{{ 'settlements.form.fields.reportedDate' | translate }} <span style="color: var(--danger)">*</span></label>
+        <input type="date" [(ngModel)]="reportedDate" name="reportedDate" required class="form-input" />
+      </div>
+
+      <!-- Περίοδος -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label class="form-label">{{ 'settlements.form.fields.periodStart' | translate }}</label>
+          <input type="date" [(ngModel)]="periodStart" name="periodStart" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">{{ 'settlements.form.fields.periodEnd' | translate }}</label>
+          <input type="date" [(ngModel)]="periodEnd" name="periodEnd" class="form-input" />
+        </div>
+      </div>
+
+      <!-- Έχει αναλυτικά στοιχεία -->
+      <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; margin-bottom: 1.5rem;">
+        <input 
+          type="checkbox" 
+          [(ngModel)]="hasQuantityDetail" 
+          name="hasQuantityDetail" 
+          id="hasQuantityDetail"
+          style="width: 18px; height: 18px; cursor: pointer;"
+        />
+        <label for="hasQuantityDetail" style="cursor: pointer; font-size: 0.95rem; font-weight: 500;">
+          {{ 'settlements.form.fields.hasQuantityDetail' | translate }}
+        </label>
+      </div>
+
+      <!-- Ποσό Είσπραξης -->
+      <div class="form-group">
+        <label class="form-label">{{ 'settlements.form.fields.receivedAmount' | translate }} <span style="color: var(--danger)">*</span></label>
+        <input type="number" step="0.01" min="0" [(ngModel)]="receivedAmount" name="receivedAmount" required class="form-input" [placeholder]="'settlements.form.fields.receivedAmountPlaceholder' | translate" />
+        <span style="font-size: 0.75rem; color: var(--text-muted)">
+          {{ 'settlements.form.fields.receivedAmountHint' | translate }}
+        </span>
+      </div>
+
+      <!-- Σημειώσεις -->
+      <div class="form-group">
+        <label class="form-label">{{ 'settlements.form.fields.notes' | translate }}</label>
+        <input type="text" [(ngModel)]="notes" name="notes" [placeholder]="'settlements.form.fields.notesPlaceholder' | translate" class="form-input" />
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <button type="submit" class="btn btn-primary" style="width: 100%;" [disabled]="partnerId === 0 || (hasQuantityDetail && formLines.length === 0)">
+          {{ 'settlements.form.submit' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Right Column: Settlement Lines (if hasQuantityDetail is true) -->
+  <div class="glass-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+      <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--accent-color); margin: 0;">
+        {{ 'settlements.form.booksTitle' | translate }}
+      </h3>
+      @if (hasQuantityDetail) {
+        <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-main);">
+          {{ 'settlements.form.totalValue' | translate: { amount: (getCalculatedTotal() | number:'1.2-2') } }}
+        </span>
+      }
+    </div>
+
+    @if (hasQuantityDetail) {
+      <!-- Line Entry Box -->
+      <div style="background-color: rgba(15, 23, 42, 0.4); padding: 1.25rem; border-radius: var(--border-radius-sm); border: 1px dashed var(--card-border); margin-bottom: 1.5rem;">
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" style="font-size: 0.8rem;">{{ 'settlements.form.fields.selectBook' | translate }}</label>
+            <select [(ngModel)]="selectedBookId" class="form-select" (change)="onBookOrPartnerChange()">
+              <option value="0" disabled>{{ 'settlements.form.fields.bookPlaceholder' | translate }}</option>
+              @for (book of books; track book.id) {
+                <option [value]="book.id">{{ book.title }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" style="font-size: 0.8rem;">{{ 'settlements.form.fields.quantity' | translate }}</label>
+            <input type="number" min="1" [(ngModel)]="lineQuantity" class="form-input" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" style="font-size: 0.8rem;">{{ 'settlements.form.fields.unitPrice' | translate }}</label>
+            <input type="number" step="0.01" min="0" [(ngModel)]="linePrice" class="form-input" />
+          </div>
+
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.75rem; color: var(--text-muted)">
+            {{ 'settlements.form.fields.unitPriceHint' | translate }}
+          </span>
+          <button type="button" (click)="addLine()" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+            {{ 'settlements.form.addBook' | translate }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Added Lines Table -->
+      <div class="table-container">
+        <table class="custom-table" *ngIf="formLines.length > 0; else emptyLines">
+          <thead>
+            <tr>
+              <th>{{ 'settlements.form.linesColumns.book' | translate }}</th>
+              <th style="text-align: center;">{{ 'settlements.form.linesColumns.quantity' | translate }}</th>
+              <th style="text-align: right;">{{ 'settlements.form.linesColumns.unitPrice' | translate }}</th>
+              <th style="text-align: right;">{{ 'settlements.form.linesColumns.total' | translate }}</th>
+              <th style="text-align: right;">{{ 'settlements.form.linesColumns.action' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let line of formLines; let i = index">
+              <td style="font-weight: 500;">{{ line.bookTitle }}</td>
+              <td style="text-align: center; font-weight: 600; color: var(--text-main);">
+                {{ line.quantitySold }}
+              </td>
+              <td style="text-align: right;">{{ line.unitPriceUsed | number:'1.2-2' }}€</td>
+              <td style="text-align: right; font-weight: 600; color: var(--accent-color);">
+                {{ (line.quantitySold * line.unitPriceUsed) | number:'1.2-2' }}€
+              </td>
+              <td style="text-align: right;">
+                <button type="button" (click)="removeLine(i)" class="btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                  {{ 'common.actions.remove' | translate }}
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <ng-template #emptyLines>
+          <div style="text-align: center; padding: 3rem; color: var(--text-muted); border: 1px dashed var(--card-border); border-radius: var(--border-radius-sm);">
+            {{ 'settlements.form.emptyLines' | translate }}
+          </div>
+        </ng-template>
+      </div>
+
+    } @else {
+      <!-- No details view -->
+      <div style="text-align: center; padding: 4rem 2rem; color: var(--text-muted); border: 1px dashed var(--card-border); border-radius: var(--border-radius-sm);">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.5;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+        <p style="font-weight: 500; margin-bottom: 0.5rem;">{{ 'settlements.form.noDetailTitle' | translate }}</p>
+        <p style="font-size: 0.85rem; max-width: 320px; margin: 0 auto;">
+          {{ 'settlements.form.noDetailDesc' | translate }}
+        </p>
+      </div>
+    }
+  </div>
+</div>

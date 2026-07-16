@@ -1,0 +1,115 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ 'books.list.title' | translate }}</h1>
+    <p style="color: var(--text-muted)">{{ 'books.list.subtitle' | translate }}</p>
+  </div>
+  <div class="header-actions">
+    <a routerLink="/books/new" class="btn btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+      {{ 'books.list.newBook' | translate }}
+    </a>
+  </div>
+</div>
+
+<div class="glass-card" style="margin-bottom: 2rem;">
+  <div class="filter-bar" style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 1.5rem;">
+    <div style="flex-grow: 1; max-width: 400px; position: relative;">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (ngModelChange)="filterBooks()" 
+        [placeholder]="'books.list.searchPlaceholder' | translate" 
+        class="form-input"
+        style="padding-left: 2.5rem;"
+      />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; height: 18px; position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-muted)">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.637 10.637Z" />
+      </svg>
+    </div>
+    
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <button 
+        (click)="toggleActiveFilter()" 
+        class="btn" 
+        [class.btn-primary]="showActiveOnly" 
+        [class.btn-secondary]="!showActiveOnly"
+        style="font-size: 0.85rem; padding: 0.5rem 1rem;"
+      >
+        {{ showActiveOnly ? ('books.list.showActiveOnly' | translate) : ('books.list.showAll' | translate) }}
+      </button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    @if (filteredBooks.length > 0) {
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>{{ 'books.list.columns.titleAuthor' | translate }}</th>
+            <th>{{ 'books.list.columns.isbn' | translate }}</th>
+            <th>{{ 'books.list.columns.retailPrice' | translate }}</th>
+            <th style="text-align: center;">{{ 'books.list.columns.warehouseStock' | translate }}</th>
+            <th style="text-align: center;">{{ 'books.list.columns.consignmentStock' | translate }}</th>
+            <th style="text-align: center;">{{ 'books.list.columns.totalStock' | translate }}</th>
+            <th style="text-align: center;">{{ 'books.list.columns.status' | translate }}</th>
+            <th style="text-align: right;">{{ 'books.list.columns.actions' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (book of filteredBooks; track book.id) {
+            <tr>
+              <td>
+                <div style="font-weight: 600; color: var(--text-main);">{{ book.title }}</div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">{{ book.author }}</div>
+              </td>
+              <td>{{ book.isbn || '-' }}</td>
+              <td>{{ book.retailPrice | number:'1.2-2' }}€</td>
+              <td style="text-align: center; font-weight: 500;">
+                <span [class.text-danger]="(book.warehouseStock || 0) <= 0">
+                  {{ book.warehouseStock || 0 }}
+                </span>
+              </td>
+              <td style="text-align: center; color: var(--accent-color);">
+                {{ book.consignmentStock || 0 }}
+              </td>
+              <td style="text-align: center; font-weight: 600;">
+                {{ book.totalStock || 0 }}
+              </td>
+              <td style="text-align: center;">
+                <span class="badge" [class.badge-success]="book.active" [class.badge-danger]="!book.active">
+                  {{ book.active ? ('common.status.active' | translate) : ('common.status.inactive' | translate) }}
+                </span>
+              </td>
+              <td style="text-align: right;">
+                <div style="display: inline-flex; gap: 0.5rem;">
+                  <a [routerLink]="['/books/details', book.id]" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.85rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px;">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                    {{ 'books.list.stockMovements' | translate }}
+                  </a>
+                  <a [routerLink]="['/books/edit', book.id]" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.85rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px;">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.83 20.062a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                    </svg>
+                    {{ 'common.actions.edit' | translate }}
+                  </a>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.5;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+        </svg>
+        <p>{{ 'books.list.empty' | translate }}</p>
+      </div>
+    }
+  </div>
+</div>
