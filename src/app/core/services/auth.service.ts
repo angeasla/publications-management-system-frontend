@@ -72,6 +72,10 @@ export class AuthService {
     }
   }
 
+  isAdmin(): boolean {
+    return this.getRoleFromToken() === 'ROLE_ADMIN';
+  }
+
   login(username: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { username, password })
       .pipe(

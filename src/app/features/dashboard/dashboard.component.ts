@@ -5,11 +5,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DashboardService, DashboardSummary } from '../../core/services/dashboard.service';
 import { resolveHttpErrorKey } from '../../core/i18n/error-key-map';
+import { GreekUppercasePipe } from '../../core/pipes/greek-uppercase.pipe';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule],
+  imports: [CommonModule, RouterLink, TranslateModule, GreekUppercasePipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

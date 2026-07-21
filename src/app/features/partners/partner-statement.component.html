@@ -52,19 +52,19 @@
   <div class="grid-cols-3" style="margin-bottom: 1.5rem;">
     
     <div class="glass-card metric-card">
-      <span class="metric-label">{{ 'partners.statement.totalDebits' | translate }}</span>
+      <span class="metric-label">{{ 'partners.statement.totalDebits' | translate | greekUppercase }}</span>
       <div class="metric-value">{{ balanceSummary.calculatedOwed | number:'1.2-2' }}€</div>
       <span class="metric-desc">{{ 'partners.statement.totalDebitsDesc' | translate }}</span>
     </div>
 
     <div class="glass-card metric-card">
-      <span class="metric-label">{{ 'partners.statement.totalCredits' | translate }}</span>
+      <span class="metric-label">{{ 'partners.statement.totalCredits' | translate | greekUppercase }}</span>
       <div class="metric-value" style="color: var(--success);">{{ balanceSummary.totalPaid | number:'1.2-2' }}€</div>
       <span class="metric-desc">{{ 'partners.statement.totalCreditsDesc' | translate }}</span>
     </div>
 
     <div class="glass-card metric-card" [class.border-danger]="balanceSummary.balance > 0">
-      <span class="metric-label">{{ 'partners.statement.currentBalance' | translate }}</span>
+      <span class="metric-label">{{ 'partners.statement.currentBalance' | translate | greekUppercase }}</span>
       <div class="metric-value" [class.text-danger]="balanceSummary.balance > 0" [class.text-success]="balanceSummary.balance <= 0">
         {{ balanceSummary.balance | number:'1.2-2' }}€
       </div>

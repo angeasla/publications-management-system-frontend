@@ -16,7 +16,7 @@
     
     <!-- Gross Revenue -->
     <div class="glass-card metric-card" style="border-top: 4px solid var(--success);">
-      <span class="metric-label">{{ 'dashboard.metrics.grossRevenue' | translate }}</span>
+      <span class="metric-label">{{ 'dashboard.metrics.grossRevenue' | translate | greekUppercase }}</span>
       <div class="metric-value" style="color: var(--success);">
         {{ summary.grossRevenues | number:'1.2-2' }}€
       </div>
@@ -25,7 +25,7 @@
 
     <!-- Total Expenses -->
     <div class="glass-card metric-card" style="border-top: 4px solid var(--danger);">
-      <span class="metric-label">{{ 'dashboard.metrics.totalExpenses' | translate }}</span>
+      <span class="metric-label">{{ 'dashboard.metrics.totalExpenses' | translate | greekUppercase }}</span>
       <div class="metric-value" style="color: var(--danger);">
         {{ summary.totalExpenses | number:'1.2-2' }}€
       </div>
@@ -34,7 +34,7 @@
 
     <!-- Net Cash Flow -->
     <div class="glass-card metric-card" style="border-top: 4px solid var(--accent-color);">
-      <span class="metric-label">{{ 'dashboard.metrics.netCashFlow' | translate }}</span>
+      <span class="metric-label">{{ 'dashboard.metrics.netCashFlow' | translate | greekUppercase }}</span>
       <div class="metric-value" [class.text-success]="summary.netCashFlow >= 0" [class.text-danger]="summary.netCashFlow < 0">
         {{ summary.netCashFlow | number:'1.2-2' }}€
       </div>
@@ -47,19 +47,19 @@
   <div class="grid-cols-3" style="margin-bottom: 2rem;">
     
     <div class="glass-card metric-card">
-      <span class="metric-label">{{ 'dashboard.metrics.activeTitles' | translate }}</span>
+      <span class="metric-label">{{ 'dashboard.metrics.activeTitles' | translate | greekUppercase }}</span>
       <div class="metric-value">{{ summary.activeBooksCount }}</div>
       <span class="metric-desc">{{ 'dashboard.metrics.activeTitlesDesc' | translate }}</span>
     </div>
 
     <div class="glass-card metric-card">
-      <span class="metric-label">{{ 'dashboard.metrics.printedCopies' | translate }}</span>
+      <span class="metric-label">{{ 'dashboard.metrics.printedCopies' | translate | greekUppercase }}</span>
       <div class="metric-value" style="color: var(--accent-color);">{{ summary.totalPrintedCopies }}</div>
       <span class="metric-desc">{{ 'dashboard.metrics.printedCopiesDesc' | translate }}</span>
     </div>
 
     <div class="glass-card metric-card">
-      <span class="metric-label">{{ 'dashboard.metrics.soldCopies' | translate }}</span>
+      <span class="metric-label">{{ 'dashboard.metrics.soldCopies' | translate | greekUppercase }}</span>
       <div class="metric-value" style="color: var(--success);">{{ summary.totalSoldCopies }}</div>
       <span class="metric-desc">{{ 'dashboard.metrics.soldCopiesDesc' | translate: { percent: (summary.totalPrintedCopies > 0 ? (summary.totalSoldCopies / summary.totalPrintedCopies * 100) : 0) | number:'1.0-0' } }}</span>
     </div>

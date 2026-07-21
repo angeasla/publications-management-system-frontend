@@ -19,6 +19,7 @@ export class BookListComponent implements OnInit {
   filteredBooks: Book[] = [];
   searchTerm: string = '';
   showActiveOnly: boolean = true;
+  loading: boolean = true;
 
   constructor(
     private bookService: BookService,
@@ -30,13 +31,16 @@ export class BookListComponent implements OnInit {
   }
 
   loadBooks(): void {
+    this.loading = true;
     this.bookService.getBooks().subscribe({
       next: (data) => {
         this.books = data;
         this.filterBooks();
+        this.loading = false;
       },
       error: (err: HttpErrorResponse) => {
         console.error('Error loading books:', err);
+        this.loading = false;
         alert(this.getErrorMessage(err));
       }
     });

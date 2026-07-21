@@ -1,73 +1,114 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './features/auth/login.component';
-import { ChangePasswordComponent } from './features/auth/change-password.component';
 import { authGuard } from './core/guards/auth.guard';
 import { roleGuard } from './core/guards/role.guard';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
-import { BookListComponent } from './features/books/book-list.component';
-import { BookFormComponent } from './features/books/book-form.component';
-import { BookDetailsComponent } from './features/books/book-details.component';
-import { PartnerListComponent } from './features/partners/partner-list.component';
-import { PartnerFormComponent } from './features/partners/partner-form.component';
-import { PartnerStatementComponent } from './features/partners/partner-statement.component';
-import { ShipmentListComponent } from './features/shipments/shipment-list.component';
-import { ShipmentFormComponent } from './features/shipments/shipment-form.component';
-import { SettlementListComponent } from './features/settlements/settlement-list.component';
-import { SettlementFormComponent } from './features/settlements/settlement-form.component';
-import { DirectSaleListComponent } from './features/direct-sales/direct-sale-list.component';
-import { DirectSaleFormComponent } from './features/direct-sales/direct-sale-form.component';
-import { PaymentListComponent } from './features/payments/payment-list.component';
-import { PaymentFormComponent } from './features/payments/payment-form.component';
-import { ExpenseListComponent } from './features/expenses/expense-list.component';
-import { ExpenseFormComponent } from './features/expenses/expense-form.component';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { 
+    path: 'login', 
+    loadComponent: () => import('./features/auth/login.component').then(m => m.LoginComponent) 
+  },
   {
     path: '',
     canActivate: [authGuard],
     children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'change-password', component: ChangePasswordComponent },
+      { 
+        path: 'dashboard', 
+        loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) 
+      },
+      { 
+        path: 'change-password', 
+        loadComponent: () => import('./features/auth/change-password.component').then(m => m.ChangePasswordComponent) 
+      },
       
-      { path: 'books', component: BookListComponent },
-      { path: 'books/new', component: BookFormComponent },
-      { path: 'books/edit/:id', component: BookFormComponent },
-      { path: 'books/details/:id', component: BookDetailsComponent },
+      { 
+        path: 'books', 
+        loadComponent: () => import('./features/books/book-list.component').then(m => m.BookListComponent) 
+      },
+      { 
+        path: 'books/new', 
+        loadComponent: () => import('./features/books/book-form.component').then(m => m.BookFormComponent) 
+      },
+      { 
+        path: 'books/edit/:id', 
+        loadComponent: () => import('./features/books/book-form.component').then(m => m.BookFormComponent) 
+      },
+      { 
+        path: 'books/details/:id', 
+        loadComponent: () => import('./features/books/book-details.component').then(m => m.BookDetailsComponent) 
+      },
       
-      { path: 'partners', component: PartnerListComponent },
-      { path: 'partners/new', component: PartnerFormComponent },
-      { path: 'partners/edit/:id', component: PartnerFormComponent },
-      { path: 'partners/statement', component: PartnerStatementComponent },
-      { path: 'partners/statement/:id', component: PartnerStatementComponent },
+      { 
+        path: 'partners', 
+        loadComponent: () => import('./features/partners/partner-list.component').then(m => m.PartnerListComponent) 
+      },
+      { 
+        path: 'partners/new', 
+        loadComponent: () => import('./features/partners/partner-form.component').then(m => m.PartnerFormComponent) 
+      },
+      { 
+        path: 'partners/edit/:id', 
+        loadComponent: () => import('./features/partners/partner-form.component').then(m => m.PartnerFormComponent) 
+      },
+      { 
+        path: 'partners/statement', 
+        loadComponent: () => import('./features/partners/partner-statement.component').then(m => m.PartnerStatementComponent) 
+      },
+      { 
+        path: 'partners/statement/:id', 
+        loadComponent: () => import('./features/partners/partner-statement.component').then(m => m.PartnerStatementComponent) 
+      },
       
-      { path: 'shipments', component: ShipmentListComponent },
-      { path: 'shipments/new', component: ShipmentFormComponent },
+      { 
+        path: 'shipments', 
+        loadComponent: () => import('./features/shipments/shipment-list.component').then(m => m.ShipmentListComponent) 
+      },
+      { 
+        path: 'shipments/new', 
+        loadComponent: () => import('./features/shipments/shipment-form.component').then(m => m.ShipmentFormComponent) 
+      },
 
-      { path: 'settlements', component: SettlementListComponent },
-      { path: 'settlements/new', component: SettlementFormComponent },
+      { 
+        path: 'settlements', 
+        loadComponent: () => import('./features/settlements/settlement-list.component').then(m => m.SettlementListComponent) 
+      },
+      { 
+        path: 'settlements/new', 
+        loadComponent: () => import('./features/settlements/settlement-form.component').then(m => m.SettlementFormComponent) 
+      },
 
-      { path: 'direct-sales', component: DirectSaleListComponent },
-      { path: 'direct-sales/new', component: DirectSaleFormComponent },
+      { 
+        path: 'direct-sales', 
+        loadComponent: () => import('./features/direct-sales/direct-sale-list.component').then(m => m.DirectSaleListComponent) 
+      },
+      { 
+        path: 'direct-sales/new', 
+        loadComponent: () => import('./features/direct-sales/direct-sale-form.component').then(m => m.DirectSaleFormComponent) 
+      },
 
-      { path: 'payments', component: PaymentListComponent },
-      { path: 'payments/new', component: PaymentFormComponent },
+      { 
+        path: 'payments', 
+        loadComponent: () => import('./features/payments/payment-list.component').then(m => m.PaymentListComponent) 
+      },
+      { 
+        path: 'payments/new', 
+        loadComponent: () => import('./features/payments/payment-form.component').then(m => m.PaymentFormComponent) 
+      },
 
       { 
         path: 'expenses', 
-        component: ExpenseListComponent,
+        loadComponent: () => import('./features/expenses/expense-list.component').then(m => m.ExpenseListComponent),
         canActivate: [roleGuard],
         data: { role: 'ROLE_ADMIN' }
       },
       { 
         path: 'expenses/new', 
-        component: ExpenseFormComponent,
+        loadComponent: () => import('./features/expenses/expense-form.component').then(m => m.ExpenseFormComponent),
         canActivate: [roleGuard],
         data: { role: 'ROLE_ADMIN' }
       },
       { 
         path: 'expenses/edit/:id', 
-        component: ExpenseFormComponent,
+        loadComponent: () => import('./features/expenses/expense-form.component').then(m => m.ExpenseFormComponent),
         canActivate: [roleGuard],
         data: { role: 'ROLE_ADMIN' }
       },

@@ -1,6 +1,6 @@
 {
   "sidebar": {
-    "appName": "Publishing House Name",
+    "appName": "Koursal",
     "appLabel": "Publishing",
     "dashboard": "Dashboard",
     "books": "Books",
@@ -62,7 +62,7 @@
   },
   "auth": {
     "login": {
-      "title": "Publishing House Name",
+      "title": "Koursal",
       "subtitle": "Publishing & Inventory Management System",
       "username": "Username",
       "password": "Password",
@@ -157,7 +157,7 @@
         "isbn": "ISBN",
         "isbnPlaceholder": "e.g. 978-960-...",
         "imprint": "Imprint (Label/Publishing)",
-        "imprintPlaceholder": "e.g. Publishing House Name",
+        "imprintPlaceholder": "e.g. Koursal",
         "publicationDate": "Publication Date",
         "retailPrice": "Retail Price (RRP €)",
         "retailPriceHint": "The nominal retail price at bookstores.",
@@ -207,7 +207,7 @@
         "title": "Record New Stock Movement",
         "type": "Movement Type",
         "quantity": "Quantity (copies)",
-        "quantityHint": "For Adjustment, enter a negative number to decrease (e.g. -5).",
+        "quantityHint": "Always enter a positive quantity.",
         "date": "Movement Date",
         "notes": "Notes / Comments",
         "notesPlaceholder": "e.g. Received 1st edition, July inventory...",
@@ -223,14 +223,16 @@
         "returned": "Returned from Partner",
         "donated": "Donation / Sponsorship",
         "destroyed": "Destroyed",
-        "adjustment": "Manual Adjustment"
+        "adjustmentIn": "Manual Adjustment (Increase)",
+        "adjustmentOut": "Manual Adjustment (Decrease)"
       },
       "movementOptions": {
         "receivedFromPrinter": "Received from Printer (+)",
         "returned": "Returned from Partner (+)",
         "donated": "Donation / Sponsorship (-)",
         "destroyed": "Destroyed (-)",
-        "adjustment": "Manual Adjustment (+/-)"
+        "adjustmentIn": "Manual Adjustment (Increase) (+)",
+        "adjustmentOut": "Manual Adjustment (Decrease) (-)"
       },
       "history": {
         "title": "Stock Movement History",

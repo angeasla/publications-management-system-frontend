@@ -7,11 +7,12 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Partner, PartnerService } from '../../core/services/partner.service';
 import { LedgerEntry, PartnerBalanceSummary, PaymentService } from '../../core/services/payment.service';
 import { resolveHttpErrorKey } from '../../core/i18n/error-key-map';
+import { GreekUppercasePipe } from '../../core/pipes/greek-uppercase.pipe';
 
 @Component({
   selector: 'app-partner-statement',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, GreekUppercasePipe],
   templateUrl: './partner-statement.component.html',
   styleUrl: './partner-statement.component.css'
 })

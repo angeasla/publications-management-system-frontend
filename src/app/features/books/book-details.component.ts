@@ -6,11 +6,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Book, BookService, StockMovement } from '../../core/services/book.service';
 import { resolveHttpErrorKey } from '../../core/i18n/error-key-map';
+import { GreekUppercasePipe } from '../../core/pipes/greek-uppercase.pipe';
 
 @Component({
   selector: 'app-book-details',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, TranslateModule],
+  imports: [CommonModule, RouterLink, FormsModule, TranslateModule, GreekUppercasePipe],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.css'
 })
@@ -113,7 +114,8 @@ export class BookDetailsComponent implements OnInit {
       'RETURNED': 'books.details.movementTypes.returned',
       'DONATED': 'books.details.movementTypes.donated',
       'DESTROYED': 'books.details.movementTypes.destroyed',
-      'ADJUSTMENT': 'books.details.movementTypes.adjustment'
+      'ADJUSTMENT_IN': 'books.details.movementTypes.adjustmentIn',
+      'ADJUSTMENT_OUT': 'books.details.movementTypes.adjustmentOut'
     };
     const key = keyMap[type];
     return key ? this.translate.instant(key) : type;
@@ -131,7 +133,8 @@ export class BookDetailsComponent implements OnInit {
       case 'DONATED':
       case 'DESTROYED':
         return 'badge-danger';
-      case 'ADJUSTMENT':
+      case 'ADJUSTMENT_IN':
+      case 'ADJUSTMENT_OUT':
         return 'badge-warning';
       default:
         return '';
@@ -139,9 +142,11 @@ export class BookDetailsComponent implements OnInit {
   }
 
   getMovementSign(type: string, qty: number): string {
-    // ADJUSTMENT has native sign
-    if (type === 'ADJUSTMENT') {
-      return qty >= 0 ? `+${qty}` : `${qty}`;
+    if (type === 'ADJUSTMENT_IN') {
+      return `+${qty}`;
+    }
+    if (type === 'ADJUSTMENT_OUT') {
+      return `-${qty}`;
     }
     // Positive types
     if (type === 'RECEIVED_FROM_PRINTER' || type === 'RETURNED') {
